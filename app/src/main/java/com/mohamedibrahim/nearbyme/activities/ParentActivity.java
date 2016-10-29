@@ -1,7 +1,6 @@
 package com.mohamedibrahim.nearbyme.activities;
 
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -26,12 +25,6 @@ public class ParentActivity extends AppCompatActivity implements FragmentToActiv
     CustomTextView tvTitle;
     private Snackbar snackbar;
     private ActionBar actionbar;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
 
     @Override
     public void showSnackbar(int messageRes) {
