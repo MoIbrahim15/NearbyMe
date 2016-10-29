@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">NearbyMe</string>
+    <string name="app_name">NearBy ME</string>
+
+
+    <!--Fonts-->
+    <string name="georgia_regular" translatable="false">fonts/Georgia-Regular.ttf</string>
+    <string name="georgia_bold" translatable="false">fonts/Georgia-Bold.ttf</string>
+    <string name="georgia_italic" translatable="false">fonts/Georgia-Italic.ttf</string>
+    <string name="georgia_bold_italic" translatable="false">fonts/Georgia-BoldItalic.ttf</string>
 </resources>
