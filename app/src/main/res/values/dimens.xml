@@ -1,5 +1,7 @@
 <resources>
-    <dimen name="d5">5dp</dimen>
     <dimen name="s18">18dp</dimen>
+    <dimen name="d2">2dp</dimen>
+    <dimen name="d3">3dp</dimen>
+    <dimen name="d5">5dp</dimen>
 
 </resources>

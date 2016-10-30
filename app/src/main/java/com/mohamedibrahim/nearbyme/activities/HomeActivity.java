@@ -27,6 +27,7 @@ public class HomeActivity extends ParentActivity {
         setupToolbar();
         fm = getFragmentManager();
         showHomeFragment();
+
     }
 
     /**
