@@ -2,8 +2,10 @@ package com.mohamedibrahim.nearbyme.fragments;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.activities.ParentActivity;
@@ -11,6 +13,7 @@ import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
 import com.mohamedibrahim.nearbyme.listeners.VolleyCallback;
 import com.mohamedibrahim.nearbyme.managers.BaseManager;
 import com.mohamedibrahim.nearbyme.utils.SoftKeyboardUtils;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by Mohamed Ibrahim on 10/29/2016.
@@ -84,5 +87,14 @@ public class ParentFragment extends Fragment implements VolleyCallback {
         if (fragmentToActivityListener != null) {
             fragmentToActivityListener.changeTitle(titleRes);
         }
+    }
+
+    public static void SetPicassoImage(Context context, String url, ImageView imageView) {
+        Picasso.with(context)
+                .load(url)
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_error)
+                .fit()
+                .into(imageView);
     }
 }
