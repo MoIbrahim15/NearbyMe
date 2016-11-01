@@ -1,10 +1,10 @@
 package com.mohamedibrahim.nearbyme.fragments;
 
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 
 import com.mohamedibrahim.nearbyme.R;
@@ -84,7 +84,8 @@ public class ParentFragment extends Fragment implements VolleyCallback {
     @Override
     public void onResume() {
         super.onResume();
-        if (fragmentToActivityListener != null) {
+        if (fragmentToActivityListener != null &&
+                !(getFragmentManager().findFragmentById(R.id.container) instanceof HomeFragment)) {
             fragmentToActivityListener.changeTitle(titleRes);
         }
     }

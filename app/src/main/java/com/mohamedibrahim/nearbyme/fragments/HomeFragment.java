@@ -3,12 +3,17 @@ package com.mohamedibrahim.nearbyme.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mohamedibrahim.nearbyme.R;
+import com.mohamedibrahim.nearbyme.adapters.PagerAdapter;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,11 +26,13 @@ public class HomeFragment extends ParentFragment {
 
     @BindView(R.id.tabs_home)
     TabLayout tabLayout;
+    @BindView(R.id.pager_home)
+    ViewPager viewPager;
+    private ArrayList<Fragment> FragmentArrayList;
 
-    public static HomeFragment newInstance(FragmentToActivityListener fragmentToActivityListener, int titleRes) {
+    public static HomeFragment newInstance(FragmentToActivityListener fragmentToActivityListener) {
         HomeFragment homeFragment = new HomeFragment();
         homeFragment.setFragmentToActivityListener(fragmentToActivityListener);
-        homeFragment.setTitleRes(titleRes);
         return homeFragment;
     }
 
@@ -48,5 +55,45 @@ public class HomeFragment extends ParentFragment {
         tabFav.findViewById(R.id.tab_favs).setBackgroundResource(R.drawable.tab_favorite_selector);
         tabLayout.addTab(tabLayout.newTab().setCustomView(tabMap));
         tabLayout.addTab(tabLayout.newTab().setCustomView(tabFav));
+
+        FragmentArrayList = new ArrayList<>();
+        FragmentArrayList.add(MapFragment.newInstance(fragmentToActivityListener));
+        FragmentArrayList.add(FavoriteFragment.newInstance(fragmentToActivityListener));
+
+        initPager();
+        tabListener();
+
+    }
+
+    private void initPager() {
+        viewPager.setAdapter(new PagerAdapter(FragmentArrayList, getFragmentManager()));
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+    }
+
+    private void tabListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+                Fragment current = FragmentArrayList.get(tab.getPosition());
+                if (fragmentToActivityListener!=null) {
+                    if (current instanceof MapFragment) {
+                        fragmentToActivityListener.changeTitle(R.string.choose_location);
+                    } else {
+                        fragmentToActivityListener.changeTitle(R.string.favorites);
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 }

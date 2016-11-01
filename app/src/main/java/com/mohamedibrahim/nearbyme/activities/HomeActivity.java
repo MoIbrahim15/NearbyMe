@@ -1,10 +1,10 @@
 package com.mohamedibrahim.nearbyme.activities;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.fragments.HomeFragment;
@@ -25,7 +25,7 @@ public class HomeActivity extends ParentActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupToolbar();
-        fm = getFragmentManager();
+        fm = getSupportFragmentManager();
         showHomeFragment();
 
     }
@@ -64,6 +64,8 @@ public class HomeActivity extends ParentActivity {
 
     @Override
     public void showHomeFragment() {
-        addFragment(HomeFragment.newInstance(this, R.string.app_name));
+        addFragment(HomeFragment.newInstance(this));
+        changeTitle(R.string.choose_location);
+
     }
 }

@@ -17,7 +17,7 @@
     <!--URL's-->
     <string name="main_url">https://api.foursquare.com/v2/venues/</string>
 
-    <!--APP KEY-->
+    <!--APP KEY FOURSQURE-->
     <string name="client_id">XBFJUKS5P5FCM3ZYIE0GM04GTIHOIVXFKE0015PNCKFKLDPM</string>
     <string name="client_secret">FDBJUQTGCGNWLRRC4OWUYHIARCLPOWLAV3V01WJUUF1OUHEI</string>
     <string name="api_version">20130815</string>
@@ -25,5 +25,8 @@
 
     <!--APP STRINGS-->
     <string name="loading">Loading</string>
+    <string name="choose_location">CHOOSE LOCATION</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="favorites">FAVORITES</string>
 
 </resources>
