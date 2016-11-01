@@ -6,19 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.MapView;
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Created by Mohamed Ibrahim on 10/31/2016.
  **/
 
-public class MapFragment extends ParentFragment implements OnMapReadyCallback {
+public class MapFragment extends ParentFragment {
 
+    @BindView(R.id.map)
+    MapView mMapView;
+    View mView;
 
     public static MapFragment newInstance(FragmentToActivityListener fragmentToActivityListener) {
         MapFragment mapFragment = new MapFragment();
@@ -26,28 +29,45 @@ public class MapFragment extends ParentFragment implements OnMapReadyCallback {
         return mapFragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_map, null);
+        ButterKnife.bind(this, mView);
+        mMapView.onCreate(savedInstanceState);
+
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_map, container, false);
-        ButterKnife.bind(this, view);
 
-        return view;
+
+        return mView;
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mMapView.onSaveInstanceState(outState);
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
 }
