@@ -49,7 +49,6 @@ public class ParentFragment extends Fragment implements VolleyCallback {
 
     @Override
     public void onSuccess(String methodName, Object object) {
-
     }
 
     @Override

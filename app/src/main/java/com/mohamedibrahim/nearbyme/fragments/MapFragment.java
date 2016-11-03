@@ -20,9 +20,11 @@ import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
 import com.mohamedibrahim.nearbyme.listeners.LocationSettingListener;
 import com.mohamedibrahim.nearbyme.listeners.OperationListener;
 import com.mohamedibrahim.nearbyme.managers.LocationManager;
+import com.mohamedibrahim.nearbyme.models.places.Places;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Mohamed Ibrahim on 10/31/2016.
@@ -35,6 +37,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
     @BindView(R.id.find_places)
     ImageButton btnFindPlaces;
     LocationSettingListener mLocationSettingRequestInterface;
+    private Location mComingLocation;
 
     View mView;
 
@@ -61,6 +64,14 @@ public class MapFragment extends ParentFragment implements OperationListener {
 
 
         return mView;
+    }
+
+
+    @OnClick(R.id.find_places)
+    void onClickFindPlaces() {
+        String ll = "ll=" + mComingLocation.getLatitude() + "," + mComingLocation.getLongitude() /*+ "&query=asasdsdgfsfs"*/;
+        manager.createRequest("explore?", ll, Places.class);
+
     }
 
     @Override
@@ -90,7 +101,6 @@ public class MapFragment extends ParentFragment implements OperationListener {
 
     }
 
-    private Location mComingLocation;
 
     @Override
     public void onOperationCompleted(int resultCode, Object mComingValue) {
@@ -109,5 +119,14 @@ public class MapFragment extends ParentFragment implements OperationListener {
         }
     }
 
+    @Override
+    public void onSuccess(String methodName, Object object) {
+        if (object instanceof Places) {
+            for (int i = 0; i < ((Places) object).getGroups().get(0).getItems().size(); i++) {
+                Log.v("result", ((Places) object).getGroups().get(0).getItems().get(i).getVenue().getName());
+            }
+        }
+
+    }
 }
 
