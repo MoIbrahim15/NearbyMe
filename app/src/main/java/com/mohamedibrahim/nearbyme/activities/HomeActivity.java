@@ -1,5 +1,6 @@
 package com.mohamedibrahim.nearbyme.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.fragments.HomeFragment;
+import com.mohamedibrahim.nearbyme.listeners.LocationSettingListener;
 
 import butterknife.ButterKnife;
 
@@ -18,6 +20,8 @@ import butterknife.ButterKnife;
 public class HomeActivity extends ParentActivity {
 
     private FragmentManager fm;
+    private LocationSettingListener mLocationListener;
+    public static final int LOCATION_SETTING_REQUEST = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +31,6 @@ public class HomeActivity extends ParentActivity {
         setupToolbar();
         fm = getSupportFragmentManager();
         showHomeFragment();
-
     }
 
     /**
@@ -67,5 +70,19 @@ public class HomeActivity extends ParentActivity {
         addFragment(HomeFragment.newInstance(this));
         changeTitle(R.string.choose_location);
 
+    }
+
+    public void setLocationSettingListener(LocationSettingListener mListener) {
+        mLocationListener = mListener;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case LOCATION_SETTING_REQUEST:
+                if (mLocationListener != null) {
+                    mLocationListener.onRequestResult(requestCode, resultCode, data);
+                }
+        }
     }
 }
