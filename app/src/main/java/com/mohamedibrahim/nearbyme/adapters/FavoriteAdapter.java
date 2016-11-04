@@ -62,10 +62,18 @@ public class FavoriteAdapter extends BaseAdapter {
         @Override
         public void onBind(int position) {
             Item item = (Item) getItem(position);
-            tvTitle.setText(item.getVenue().getName());
-            tvAddress.setText(item.getVenue().getLocation().getAddress());
-            tvDistance.setText(item.getVenue().getLocation().getDistance().concat(getContext().getResources().getString(R.string.meter)));
-            ratingBar.setRating(Float.parseFloat(item.getVenue().getRating()) / 2);
+            if (item.getVenue().getName() != null) {
+                tvTitle.setText(item.getVenue().getName());
+            }
+            if (item.getVenue().getLocation().getAddress() != null) {
+                tvAddress.setText(item.getVenue().getLocation().getAddress());
+            }
+            if (item.getVenue().getLocation().getDistance() != null) {
+                tvDistance.setText(item.getVenue().getLocation().getDistance().concat(getContext().getResources().getString(R.string.meter)));
+            }
+            if (item.getVenue().getRating() != null) {
+                ratingBar.setRating(Float.parseFloat(item.getVenue().getRating()) / 2);
+            }
             chkLike.setChecked(true);
             chkLike.setTag(position);
 
