@@ -1,5 +1,6 @@
 package com.mohamedibrahim.nearbyme.fragments;
 
+import android.app.Dialog;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,6 +27,8 @@ import com.mohamedibrahim.nearbyme.listeners.OperationListener;
 import com.mohamedibrahim.nearbyme.managers.LocationManager;
 import com.mohamedibrahim.nearbyme.models.places.Item;
 import com.mohamedibrahim.nearbyme.models.places.Places;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +48,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
     private Location mComingLocation;
     GoogleMap googleMapBase;
     View mView;
+    HashMap<String, Item> allPlaces;
 
     public static MapFragment newInstance(FragmentToActivityListener fragmentToActivityListener) {
         MapFragment mapFragment = new MapFragment();
@@ -60,6 +64,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
         mMapView.onCreate(savedInstanceState);
         mLocationSettingRequestInterface = LocationManager.getInstance(getActivity()).setMapView(mMapView).buildGoogleMapApiClient(this);
         LocationManager.getInstance(getActivity()).setMapView(mMapView).onMovingMapLocation(mMapView, btnFindPlaces);
+        allPlaces = new HashMap<>();
     }
 
     @Nullable
@@ -125,9 +130,18 @@ public class MapFragment extends ParentFragment implements OperationListener {
                         googleMapBase.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                             @Override
                             public boolean onMarkerClick(Marker marker) {
-                                Toast.makeText(getActivity(), marker.getSnippet(),
-                                        Toast.LENGTH_SHORT).show();
-                                return false;
+                                final Dialog detailsDialog = new Dialog(getContext(), R.style.DialogStyle);
+                                detailsDialog.setContentView(R.layout.info_content);
+
+                                TextView tvName = (TextView) detailsDialog.findViewById(R.id.tv_title);
+                                TextView tvAddress = (TextView) detailsDialog.findViewById(R.id.tv_address);
+                                TextView tvDistance = (TextView) detailsDialog.findViewById(R.id.tv_distance);
+
+                                tvName.setText(allPlaces.get(marker.getSnippet()).getVenue().getName());
+                                tvAddress.setText(allPlaces.get(marker.getSnippet()).getVenue().getLocation().getAddress());
+                                tvDistance.setText(allPlaces.get(marker.getSnippet()).getVenue().getLocation().getDistance().concat(getString(R.string.meter)));
+                                detailsDialog.show();
+                                return true;
                             }
                         });
 
@@ -143,12 +157,14 @@ public class MapFragment extends ParentFragment implements OperationListener {
         if (object instanceof Places) {
             for (int i = 0; i < ((Places) object).getGroups().get(0).getItems().size(); i++) {
                 Item item = ((Places) object).getGroups().get(0).getItems().get(i);
+                String itemLatLng = item.getVenue().getLocation().getLat() +
+                        "," + item.getVenue().getLocation().getLng();
                 Log.v("result", item.getVenue().getName());
                 MarkerOptions newMarker = new MarkerOptions();
                 newMarker.position(new LatLng(item.getVenue().getLocation().getLat(),
                         item.getVenue().getLocation().getLng()));
-                newMarker.snippet(item.getVenue().getLocation().getLat() +
-                        "," + item.getVenue().getLocation().getLng());
+                newMarker.snippet(itemLatLng);
+                allPlaces.put(itemLatLng, item);
                 googleMapBase.addMarker(newMarker);
             }
         }

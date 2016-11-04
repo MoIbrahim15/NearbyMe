@@ -33,5 +33,6 @@
     <string name="no_address_found">no address found</string>
     <string name="address_found">address found</string>
     <string name="sry_msg">Sorry, Please try again later.</string>
+    <string name="meter">M</string>
 
 </resources>

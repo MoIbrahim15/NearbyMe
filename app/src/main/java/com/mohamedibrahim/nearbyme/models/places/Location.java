@@ -23,7 +23,7 @@ public class Location {
     private Double lng;
     @SerializedName("distance")
     @Expose
-    private Integer distance;
+    private String distance;
 
     /**
      *
@@ -67,7 +67,7 @@ public class Location {
      * @return
      * The distance
      */
-    public Integer getDistance() {
+    public String getDistance() {
         return distance;
     }
 
