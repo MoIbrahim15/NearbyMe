@@ -4,11 +4,12 @@ import android.app.Dialog;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,6 +28,7 @@ import com.mohamedibrahim.nearbyme.listeners.OperationListener;
 import com.mohamedibrahim.nearbyme.managers.LocationManager;
 import com.mohamedibrahim.nearbyme.models.places.Item;
 import com.mohamedibrahim.nearbyme.models.places.Places;
+import com.mohamedibrahim.nearbyme.models.places.Venue;
 
 import java.util.HashMap;
 
@@ -118,7 +120,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
     public void onOperationCompleted(int resultCode, Object mComingValue) {
         if (mComingValue instanceof Location) {
             mComingLocation = (Location) mComingValue;
-            Log.v("LOCATIOOOOOOOON------", mComingLocation.getLatitude() + "");
+//            Log.v("LOCATIOOOOOOOON------", mComingLocation.getLatitude() + "");
 
             if (resultCode == LocationManager.FIRST_LOCATION_CALL) {
                 mMapView.getMapAsync(new OnMapReadyCallback() {
@@ -130,16 +132,12 @@ public class MapFragment extends ParentFragment implements OperationListener {
                         googleMapBase.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                             @Override
                             public boolean onMarkerClick(Marker marker) {
-                                final Dialog detailsDialog = new Dialog(getContext(), R.style.DialogStyle);
-                                detailsDialog.setContentView(R.layout.info_content);
 
-                                TextView tvName = (TextView) detailsDialog.findViewById(R.id.tv_title);
-                                TextView tvAddress = (TextView) detailsDialog.findViewById(R.id.tv_address);
-                                TextView tvDistance = (TextView) detailsDialog.findViewById(R.id.tv_distance);
+                                Dialog detailsDialog = new Dialog(getContext(), R.style.DialogStyle);
+                                detailsDialog.setContentView(R.layout.dialog_info_content);
 
-                                tvName.setText(allPlaces.get(marker.getSnippet()).getVenue().getName());
-                                tvAddress.setText(allPlaces.get(marker.getSnippet()).getVenue().getLocation().getAddress());
-                                tvDistance.setText(allPlaces.get(marker.getSnippet()).getVenue().getLocation().getDistance().concat(getString(R.string.meter)));
+                                fillData(marker, detailsDialog);
+
                                 detailsDialog.show();
                                 return true;
                             }
@@ -151,6 +149,21 @@ public class MapFragment extends ParentFragment implements OperationListener {
         }
     }
 
+    private void fillData(Marker marker, Dialog detailsDialog) {
+        Venue venue = allPlaces.get(marker.getSnippet()).getVenue();
+        TextView tvName = (TextView) detailsDialog.findViewById(R.id.tv_title);
+        TextView tvAddress = (TextView) detailsDialog.findViewById(R.id.tv_address);
+        TextView tvDistance = (TextView) detailsDialog.findViewById(R.id.tv_distance);
+        RatingBar ratingBar = (RatingBar) detailsDialog.findViewById(R.id.rate_place);
+        CheckBox checkBox = (CheckBox) detailsDialog.findViewById(R.id.chk_like);
+
+        tvName.setText(venue.getName());
+        tvAddress.setText(venue.getLocation().getAddress());
+        tvDistance.setText(venue.getLocation().getDistance().concat(getString(R.string.meter)));
+        ratingBar.setRating(Float.parseFloat(venue.getRating()) / 2);
+
+    }
+
     @Override
     public void onSuccess(String methodName, Object object) {
         progress.hide();
@@ -159,13 +172,16 @@ public class MapFragment extends ParentFragment implements OperationListener {
                 Item item = ((Places) object).getGroups().get(0).getItems().get(i);
                 String itemLatLng = item.getVenue().getLocation().getLat() +
                         "," + item.getVenue().getLocation().getLng();
-                Log.v("result", item.getVenue().getName());
+
+//                Log.v("result", item.getVenue().getRating());
+
                 MarkerOptions newMarker = new MarkerOptions();
                 newMarker.position(new LatLng(item.getVenue().getLocation().getLat(),
                         item.getVenue().getLocation().getLng()));
                 newMarker.snippet(itemLatLng);
                 allPlaces.put(itemLatLng, item);
                 googleMapBase.addMarker(newMarker);
+
             }
         }
     }

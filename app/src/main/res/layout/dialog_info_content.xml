@@ -20,6 +20,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/d8"
         android:orientation="horizontal">
 
         <com.mohamedibrahim.nearbyme.views.CustomTextView
@@ -36,4 +37,28 @@
             app:fontType="georgiaBold" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RatingBar
+            android:id="@+id/rate_place"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:progressDrawable="@drawable/ratebar_shape"
+            android:stepSize="0.1" />
+
+        <CheckBox
+            android:id="@+id/chk_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableRight="@drawable/like_selector"
+            android:src="@drawable/ic_like" />
+    </LinearLayout>
 </LinearLayout>
