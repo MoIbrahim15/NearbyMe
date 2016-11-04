@@ -76,11 +76,12 @@ public class HomeFragment extends ParentFragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
                 Fragment current = FragmentArrayList.get(tab.getPosition());
-                if (fragmentToActivityListener!=null) {
+                if (fragmentToActivityListener != null) {
                     if (current instanceof MapFragment) {
                         fragmentToActivityListener.changeTitle(R.string.choose_location);
                     } else {
                         fragmentToActivityListener.changeTitle(R.string.favorites);
+                        ((FavoriteFragment) current).onResumeFragment();
                     }
                 }
             }
