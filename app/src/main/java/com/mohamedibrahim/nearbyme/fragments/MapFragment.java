@@ -160,14 +160,25 @@ public class MapFragment extends ParentFragment implements OperationListener {
         RatingBar ratingBar = (RatingBar) detailsDialog.findViewById(R.id.rate_place);
         final CheckBox chkLike = (CheckBox) detailsDialog.findViewById(R.id.chk_like);
 
-        tvName.setText(venue.getName());
-        tvAddress.setText(venue.getLocation().getAddress());
-        tvDistance.setText(venue.getLocation().getDistance().concat(getString(R.string.meter)));
-        ratingBar.setRating(Float.parseFloat(venue.getRating()) / 2);
+
+        if (venue.getName() != null) {
+            tvName.setText(venue.getName());
+        }
+
+        if (venue.getLocation().getAddress() != null) {
+            tvAddress.setText(venue.getLocation().getAddress());
+        }
+        if (venue.getLocation().getDistance() != null) {
+            tvDistance.setText(venue.getLocation().getDistance().concat(getString(R.string.meter)));
+        }
+        if (venue.getRating() != null || !venue.getRating().equals("")) {
+            ratingBar.setRating(Float.parseFloat(venue.getRating()) / 2);
+        }
 
         if (placesDBHelper.ifPlaceFavorite(venue.getId())) {
             chkLike.setChecked(true);
         }
+
         chkLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -198,6 +209,9 @@ public class MapFragment extends ParentFragment implements OperationListener {
                 newMarker.snippet(itemLatLng);
                 allPlaces.put(itemLatLng, item);
                 googleMapBase.addMarker(newMarker);
+            }
+            if (((Places) object).getWarning() != null) {
+                ((HomeActivity) getActivity()).showSnackbar(((Places) object).getWarning().getText());
             }
         }
     }

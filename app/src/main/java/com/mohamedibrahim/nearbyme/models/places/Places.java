@@ -15,6 +15,9 @@ public class Places {
     @SerializedName("groups")
     @Expose
     private List<Group> groups = new ArrayList<Group>();
+    @SerializedName("warning")
+    @Expose
+    private Warning warning;
 
     /**
      *
@@ -25,5 +28,7 @@ public class Places {
         return groups;
     }
 
-
+    public Warning getWarning() {
+        return warning;
+    }
 }
