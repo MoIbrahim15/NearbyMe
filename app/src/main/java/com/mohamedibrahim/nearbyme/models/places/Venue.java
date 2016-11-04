@@ -13,18 +13,9 @@ import java.util.List;
 
 public class Venue {
 
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//
-//    public void setLocation(Location location) {
-//        this.location = location;
-//    }
-//
-//    public void setRating(String rating) {
-//        this.rating = rating;
-//    }
-
+    @SerializedName("id")
+    @Expose
+    private String id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -39,39 +30,53 @@ public class Venue {
     private String rating;
 
     /**
-     *
-     * @return
-     * The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     *
-     * @return
-     * The location
+     * @return The location
      */
     public Location getLocation() {
         return location;
     }
 
     /**
-     *
-     * @return
-     * The categories
+     * @return The categories
      */
     public List<Category> getCategories() {
         return categories;
     }
 
     /**
-     *
-     * @return
-     * The rating
+     * @return The rating
      */
     public String getRating() {
         return rating;
     }
 
+    /**
+     * @return The id
+     */
+    public String getId() {
+        return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

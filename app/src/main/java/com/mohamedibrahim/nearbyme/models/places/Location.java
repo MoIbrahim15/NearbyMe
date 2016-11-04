@@ -18,39 +18,15 @@ public class Location {
     @SerializedName("lat")
     @Expose
     private Double lat;
-
-//    public void setAddress(String address) {
-//        this.address = address;
-//    }
-//
-//    public void setCrossStreet(String crossStreet) {
-//        this.crossStreet = crossStreet;
-//    }
-//
-//    public void setLat(Double lat) {
-//        this.lat = lat;
-//    }
-//
-//    public void setLng(Double lng) {
-//        this.lng = lng;
-//    }
-//
-//    public void setDistance(String distance) {
-//        this.distance = distance;
-//    }
-
     @SerializedName("lng")
     @Expose
-
     private Double lng;
     @SerializedName("distance")
     @Expose
     private String distance;
 
     /**
-     *
-     * @return
-     * The address
+     * @return The address
      */
     public String getAddress() {
         return address;
@@ -58,40 +34,51 @@ public class Location {
 
 
     /**
-     *
-     * @return
-     * The crossStreet
+     * @return The crossStreet
      */
     public String getCrossStreet() {
         return crossStreet;
     }
 
     /**
-     *
-     * @return
-     * The lat
+     * @return The lat
      */
     public Double getLat() {
         return lat;
     }
 
     /**
-     *
-     * @return
-     * The lng
+     * @return The lng
      */
     public Double getLng() {
         return lng;
     }
 
     /**
-     *
-     * @return
-     * The distance
+     * @return The distance
      */
     public String getDistance() {
         return distance;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setCrossStreet(String crossStreet) {
+        this.crossStreet = crossStreet;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
 
 }

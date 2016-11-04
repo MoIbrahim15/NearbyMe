@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.activities.HomeActivity;
 import com.mohamedibrahim.nearbyme.activities.ParentActivity;
+import com.mohamedibrahim.nearbyme.data.PlacesDBHelper;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
 import com.mohamedibrahim.nearbyme.listeners.LocationSettingListener;
 import com.mohamedibrahim.nearbyme.listeners.OperationListener;
@@ -51,6 +52,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
     GoogleMap googleMapBase;
     View mView;
     HashMap<String, Item> allPlaces;
+    PlacesDBHelper placesDBHelper;
 
     public static MapFragment newInstance(FragmentToActivityListener fragmentToActivityListener) {
         MapFragment mapFragment = new MapFragment();
@@ -67,6 +69,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
         mLocationSettingRequestInterface = LocationManager.getInstance(getActivity()).setMapView(mMapView).buildGoogleMapApiClient(this);
         LocationManager.getInstance(getActivity()).setMapView(mMapView).onMovingMapLocation(mMapView, btnFindPlaces);
         allPlaces = new HashMap<>();
+        placesDBHelper = new PlacesDBHelper(getContext());
     }
 
     @Nullable
@@ -149,18 +152,32 @@ public class MapFragment extends ParentFragment implements OperationListener {
         }
     }
 
-    private void fillData(Marker marker, Dialog detailsDialog) {
+    private void fillData(final Marker marker, Dialog detailsDialog) {
         Venue venue = allPlaces.get(marker.getSnippet()).getVenue();
         CustomTextView tvName = (CustomTextView) detailsDialog.findViewById(R.id.tv_title);
         CustomTextView tvAddress = (CustomTextView) detailsDialog.findViewById(R.id.tv_address);
         CustomTextView tvDistance = (CustomTextView) detailsDialog.findViewById(R.id.tv_distance);
         RatingBar ratingBar = (RatingBar) detailsDialog.findViewById(R.id.rate_place);
-        CheckBox chkLike = (CheckBox) detailsDialog.findViewById(R.id.chk_like);
+        final CheckBox chkLike = (CheckBox) detailsDialog.findViewById(R.id.chk_like);
 
         tvName.setText(venue.getName());
         tvAddress.setText(venue.getLocation().getAddress());
         tvDistance.setText(venue.getLocation().getDistance().concat(getString(R.string.meter)));
         ratingBar.setRating(Float.parseFloat(venue.getRating()) / 2);
+
+        if (placesDBHelper.ifPlaceFavorite(venue.getId())) {
+            chkLike.setChecked(true);
+        }
+        chkLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!chkLike.isChecked()) {
+                    placesDBHelper.deletePlace(allPlaces.get(marker.getSnippet()));
+                } else {
+                    placesDBHelper.addPlace(allPlaces.get(marker.getSnippet()));
+                }
+            }
+        });
 
     }
 
@@ -181,7 +198,6 @@ public class MapFragment extends ParentFragment implements OperationListener {
                 newMarker.snippet(itemLatLng);
                 allPlaces.put(itemLatLng, item);
                 googleMapBase.addMarker(newMarker);
-
             }
         }
     }

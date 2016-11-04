@@ -66,15 +66,15 @@ public class FavoriteAdapter extends BaseAdapter {
             tvAddress.setText(item.getVenue().getLocation().getAddress());
             tvDistance.setText(item.getVenue().getLocation().getDistance().concat(getContext().getResources().getString(R.string.meter)));
             ratingBar.setRating(Float.parseFloat(item.getVenue().getRating()) / 2);
-
+            chkLike.setChecked(true);
             chkLike.setTag(position);
 
         }
 
         @OnClick(R.id.chk_like)
-        void itemLikeUnLike(View v) {
+        void itemUnLike(View v) {
             int mPosition = (int) v.getTag();
-            mListener.onAdapterListener(items.get(mPosition));
+            mListener.onAdapterListener(mPosition);
         }
     }
 }

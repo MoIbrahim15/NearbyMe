@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.adapters.FavoriteAdapter;
+import com.mohamedibrahim.nearbyme.data.PlacesDBHelper;
 import com.mohamedibrahim.nearbyme.listeners.AdapterListener;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
 import com.mohamedibrahim.nearbyme.models.places.Item;
@@ -32,6 +33,7 @@ public class FavoriteFragment extends ParentFragment implements AdapterListener,
     RecyclerView recyclerView;
     FavoriteAdapter mAdapter;
     ArrayList<Item> items;
+    private PlacesDBHelper placesDBHelper;
 
     public static FavoriteFragment newInstance(FragmentToActivityListener fragmentToActivityListener) {
         FavoriteFragment favoriteFragment = new FavoriteFragment();
@@ -39,39 +41,39 @@ public class FavoriteFragment extends ParentFragment implements AdapterListener,
         return favoriteFragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        placesDBHelper = new PlacesDBHelper(getContext());
+        items = placesDBHelper.getAllPlaces();
+
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         ButterKnife.bind(this, view);
-        items = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            Location location = new Location();
-//            location.setDistance("116");
-//            location.setAddress("Mohandesen");
-//            Venue venue = new Venue();
-//            venue.setLocation(location);
-//            venue.setName("Cafe");
-//            venue.setRating("5");
-//            Item item = new Item();
-//            item.setVenue(venue);
-//            items.add(item);
-//        }
-//        initRecycler();
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        initRecycler();
 
         return view;
     }
 
     @Override
     public void onAdapterListener(Object mComingObject) {
-
+        placesDBHelper.deletePlace(items.get((int) mComingObject));
+        items.remove(items.get((int) mComingObject));
+        mAdapter.notifyDataSetChanged(items);
     }
 
 
     @Override
     public void onRefresh() {
-
+        items = placesDBHelper.getAllPlaces();
+        mAdapter.notifyDataSetChanged(items);
+        refreshLayout.setRefreshing(false);
     }
 
 
