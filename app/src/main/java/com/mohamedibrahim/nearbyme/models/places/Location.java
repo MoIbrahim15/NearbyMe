@@ -2,7 +2,7 @@ package com.mohamedibrahim.nearbyme.models.places;
 
 /**
  * Created by Mohamed Ibrahim on 11/3/2016.
- */
+ **/
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -18,8 +18,30 @@ public class Location {
     @SerializedName("lat")
     @Expose
     private Double lat;
+
+//    public void setAddress(String address) {
+//        this.address = address;
+//    }
+//
+//    public void setCrossStreet(String crossStreet) {
+//        this.crossStreet = crossStreet;
+//    }
+//
+//    public void setLat(Double lat) {
+//        this.lat = lat;
+//    }
+//
+//    public void setLng(Double lng) {
+//        this.lng = lng;
+//    }
+//
+//    public void setDistance(String distance) {
+//        this.distance = distance;
+//    }
+
     @SerializedName("lng")
     @Expose
+
     private Double lng;
     @SerializedName("distance")
     @Expose

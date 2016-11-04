@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,6 +28,7 @@ import com.mohamedibrahim.nearbyme.managers.LocationManager;
 import com.mohamedibrahim.nearbyme.models.places.Item;
 import com.mohamedibrahim.nearbyme.models.places.Places;
 import com.mohamedibrahim.nearbyme.models.places.Venue;
+import com.mohamedibrahim.nearbyme.views.CustomTextView;
 
 import java.util.HashMap;
 
@@ -134,7 +134,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
                             public boolean onMarkerClick(Marker marker) {
 
                                 Dialog detailsDialog = new Dialog(getContext(), R.style.DialogStyle);
-                                detailsDialog.setContentView(R.layout.dialog_info_content);
+                                detailsDialog.setContentView(R.layout.item_info_content);
 
                                 fillData(marker, detailsDialog);
 
@@ -151,11 +151,11 @@ public class MapFragment extends ParentFragment implements OperationListener {
 
     private void fillData(Marker marker, Dialog detailsDialog) {
         Venue venue = allPlaces.get(marker.getSnippet()).getVenue();
-        TextView tvName = (TextView) detailsDialog.findViewById(R.id.tv_title);
-        TextView tvAddress = (TextView) detailsDialog.findViewById(R.id.tv_address);
-        TextView tvDistance = (TextView) detailsDialog.findViewById(R.id.tv_distance);
+        CustomTextView tvName = (CustomTextView) detailsDialog.findViewById(R.id.tv_title);
+        CustomTextView tvAddress = (CustomTextView) detailsDialog.findViewById(R.id.tv_address);
+        CustomTextView tvDistance = (CustomTextView) detailsDialog.findViewById(R.id.tv_distance);
         RatingBar ratingBar = (RatingBar) detailsDialog.findViewById(R.id.rate_place);
-        CheckBox checkBox = (CheckBox) detailsDialog.findViewById(R.id.chk_like);
+        CheckBox chkLike = (CheckBox) detailsDialog.findViewById(R.id.chk_like);
 
         tvName.setText(venue.getName());
         tvAddress.setText(venue.getLocation().getAddress());

@@ -2,7 +2,7 @@ package com.mohamedibrahim.nearbyme.models.places;
 
 /**
  * Created by Mohamed Ibrahim on 11/3/2016.
- */
+ **/
 
 
 import com.google.gson.annotations.Expose;
@@ -12,6 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Venue {
+
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public void setLocation(Location location) {
+//        this.location = location;
+//    }
+//
+//    public void setRating(String rating) {
+//        this.rating = rating;
+//    }
 
     @SerializedName("name")
     @Expose

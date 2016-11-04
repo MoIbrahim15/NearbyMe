@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class Item {
 
+//    public void setVenue(Venue venue) {
+//        this.venue = venue;
+//    }
+
     @SerializedName("venue")
     @Expose
     private Venue venue;
