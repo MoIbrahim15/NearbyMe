@@ -32,5 +32,6 @@
     <string name="invalid_lat_long_used">invalid lat long used</string>
     <string name="no_address_found">no address found</string>
     <string name="address_found">address found</string>
+    <string name="sry_msg">Sorry, Please try again later.</string>
 
 </resources>

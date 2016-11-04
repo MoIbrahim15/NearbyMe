@@ -8,18 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.activities.HomeActivity;
+import com.mohamedibrahim.nearbyme.activities.ParentActivity;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
 import com.mohamedibrahim.nearbyme.listeners.LocationSettingListener;
 import com.mohamedibrahim.nearbyme.listeners.OperationListener;
 import com.mohamedibrahim.nearbyme.managers.LocationManager;
+import com.mohamedibrahim.nearbyme.models.places.Item;
 import com.mohamedibrahim.nearbyme.models.places.Places;
 
 import butterknife.BindView;
@@ -38,7 +43,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
     ImageButton btnFindPlaces;
     LocationSettingListener mLocationSettingRequestInterface;
     private Location mComingLocation;
-
+    GoogleMap googleMapBase;
     View mView;
 
     public static MapFragment newInstance(FragmentToActivityListener fragmentToActivityListener) {
@@ -61,17 +66,19 @@ public class MapFragment extends ParentFragment implements OperationListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((HomeActivity) getActivity()).setLocationSettingListener(mLocationSettingRequestInterface);
-
-
         return mView;
     }
 
 
     @OnClick(R.id.find_places)
     void onClickFindPlaces() {
-        String ll = "ll=" + mComingLocation.getLatitude() + "," + mComingLocation.getLongitude() /*+ "&query=asasdsdgfsfs"*/;
-        manager.createRequest("explore?", ll, Places.class);
-
+        if (mComingLocation != null && mComingLocation.getLatitude() != 0.0) {
+            String ll = "ll=" + mComingLocation.getLatitude() + "," + mComingLocation.getLongitude() /*+ "&query=asasdsdgfsfs"*/;
+            progress.show();
+            manager.createRequest("explore?", ll, Places.class);
+        } else {
+            ((ParentActivity) getActivity()).showSnackbar(R.string.sry_msg);
+        }
     }
 
     @Override
@@ -107,12 +114,23 @@ public class MapFragment extends ParentFragment implements OperationListener {
         if (mComingValue instanceof Location) {
             mComingLocation = (Location) mComingValue;
             Log.v("LOCATIOOOOOOOON------", mComingLocation.getLatitude() + "");
+
             if (resultCode == LocationManager.FIRST_LOCATION_CALL) {
                 mMapView.getMapAsync(new OnMapReadyCallback() {
                     @Override
                     public void onMapReady(GoogleMap googleMap) {
+                        googleMapBase = googleMap;
                         googleMap.setMyLocationEnabled(true);
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mComingLocation.getLatitude(), mComingLocation.getLongitude()), 17.0f));
+                        googleMapBase.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                            @Override
+                            public boolean onMarkerClick(Marker marker) {
+                                Toast.makeText(getActivity(), marker.getSnippet(),
+                                        Toast.LENGTH_SHORT).show();
+                                return false;
+                            }
+                        });
+
                     }
                 });
             }
@@ -121,12 +139,19 @@ public class MapFragment extends ParentFragment implements OperationListener {
 
     @Override
     public void onSuccess(String methodName, Object object) {
+        progress.hide();
         if (object instanceof Places) {
             for (int i = 0; i < ((Places) object).getGroups().get(0).getItems().size(); i++) {
-                Log.v("result", ((Places) object).getGroups().get(0).getItems().get(i).getVenue().getName());
+                Item item = ((Places) object).getGroups().get(0).getItems().get(i);
+                Log.v("result", item.getVenue().getName());
+                MarkerOptions newMarker = new MarkerOptions();
+                newMarker.position(new LatLng(item.getVenue().getLocation().getLat(),
+                        item.getVenue().getLocation().getLng()));
+                newMarker.snippet(item.getVenue().getLocation().getLat() +
+                        "," + item.getVenue().getLocation().getLng());
+                googleMapBase.addMarker(newMarker);
             }
         }
-
     }
 }
 
