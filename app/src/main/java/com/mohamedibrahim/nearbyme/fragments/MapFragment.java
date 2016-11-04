@@ -20,8 +20,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.activities.HomeActivity;
-import com.mohamedibrahim.nearbyme.activities.ParentActivity;
-import com.mohamedibrahim.nearbyme.data.PlacesDBHelper;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
 import com.mohamedibrahim.nearbyme.listeners.LocationSettingListener;
 import com.mohamedibrahim.nearbyme.listeners.OperationListener;
@@ -49,10 +47,9 @@ public class MapFragment extends ParentFragment implements OperationListener {
     ImageButton btnFindPlaces;
     LocationSettingListener mLocationSettingRequestInterface;
     private Location mComingLocation;
-    GoogleMap googleMapBase;
+    private HashMap<String, Item> allPlaces;
+    private GoogleMap googleMapBase;
     View mView;
-    HashMap<String, Item> allPlaces;
-    PlacesDBHelper placesDBHelper;
 
     public static MapFragment newInstance(FragmentToActivityListener fragmentToActivityListener) {
         MapFragment mapFragment = new MapFragment();
@@ -69,7 +66,6 @@ public class MapFragment extends ParentFragment implements OperationListener {
         mLocationSettingRequestInterface = LocationManager.getInstance(getActivity()).setMapView(mMapView).buildGoogleMapApiClient(this);
         LocationManager.getInstance(getActivity()).setMapView(mMapView).onMovingMapLocation(mMapView, btnFindPlaces);
         allPlaces = new HashMap<>();
-        placesDBHelper = new PlacesDBHelper(getContext());
     }
 
     @Nullable
@@ -87,7 +83,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
             progress.show();
             manager.createRequest("explore?", ll, Places.class);
         } else {
-            ((ParentActivity) getActivity()).showSnackbar(R.string.sry_msg);
+            fragmentToActivityListener.showSnackbar(R.string.sry_msg);
         }
     }
 
@@ -115,7 +111,6 @@ public class MapFragment extends ParentFragment implements OperationListener {
         super.onDestroy();
         mMapView.onDestroy();
         LocationManager.getInstance(getActivity()).onDestroy();
-
     }
 
 
@@ -171,7 +166,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
         if (venue.getLocation().getDistance() != null) {
             tvDistance.setText(venue.getLocation().getDistance().concat(getString(R.string.meter)));
         }
-        if (venue.getRating() != null || !venue.getRating().equals("")) {
+        if (venue.getRating() != null) {
             ratingBar.setRating(Float.parseFloat(venue.getRating()) / 2);
         }
 
@@ -211,7 +206,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
                 googleMapBase.addMarker(newMarker);
             }
             if (((Places) object).getWarning() != null) {
-                ((HomeActivity) getActivity()).showSnackbar(((Places) object).getWarning().getText());
+                fragmentToActivityListener.showSnackbar(((Places) object).getWarning().getText());
             }
         }
     }

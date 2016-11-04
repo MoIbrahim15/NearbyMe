@@ -12,12 +12,8 @@ import android.view.ViewGroup;
 
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.adapters.FavoriteAdapter;
-import com.mohamedibrahim.nearbyme.data.PlacesDBHelper;
 import com.mohamedibrahim.nearbyme.listeners.AdapterListener;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
-import com.mohamedibrahim.nearbyme.models.places.Item;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,28 +21,19 @@ import butterknife.ButterKnife;
 /**
  * Created by Mohamed Ibrahim on 11/1/2016.
  **/
-public class FavoriteFragment extends ParentFragment implements AdapterListener, SwipeRefreshLayout.OnRefreshListener {
+public class FavoriteFragment extends ParentFragment implements SwipeRefreshLayout.OnRefreshListener, AdapterListener {
 
     @BindView(R.id.refresh)
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    FavoriteAdapter mAdapter;
-    ArrayList<Item> items;
-    private PlacesDBHelper placesDBHelper;
+    private FavoriteAdapter mAdapter;
+
 
     public static FavoriteFragment newInstance(FragmentToActivityListener fragmentToActivityListener) {
         FavoriteFragment favoriteFragment = new FavoriteFragment();
         favoriteFragment.setFragmentToActivityListener(fragmentToActivityListener);
         return favoriteFragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        placesDBHelper = new PlacesDBHelper(getContext());
-        items = placesDBHelper.getAllPlaces();
-
     }
 
     @Nullable

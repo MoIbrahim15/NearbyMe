@@ -39,7 +39,6 @@
     </style>
     <style name="InfoStyle">
         <item name="android:textSize">@dimen/s16</item>
-        <item name="android:text">dfdsfds</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
     </style>

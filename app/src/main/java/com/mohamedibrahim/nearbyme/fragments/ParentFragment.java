@@ -9,11 +9,15 @@ import android.widget.ImageView;
 
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.activities.ParentActivity;
+import com.mohamedibrahim.nearbyme.data.PlacesDBHelper;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
 import com.mohamedibrahim.nearbyme.listeners.VolleyCallback;
 import com.mohamedibrahim.nearbyme.managers.BaseManager;
+import com.mohamedibrahim.nearbyme.models.places.Item;
 import com.mohamedibrahim.nearbyme.utils.SoftKeyboardUtils;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 /**
  * Created by Mohamed Ibrahim on 10/29/2016.
@@ -25,7 +29,8 @@ public class ParentFragment extends Fragment implements VolleyCallback {
     protected ProgressDialog progress;
     protected BaseManager manager;
     protected int titleRes;
-
+    protected ArrayList<Item> items;
+    protected PlacesDBHelper placesDBHelper;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +42,9 @@ public class ParentFragment extends Fragment implements VolleyCallback {
         progress.setMessage(getString(R.string.loading));
         progress.setCancelable(false);
         progress.setCanceledOnTouchOutside(false);
+
+        placesDBHelper = new PlacesDBHelper(getContext());
+        items = placesDBHelper.getAllPlaces();
     }
 
     public void setFragmentToActivityListener(FragmentToActivityListener fragmentToActivityListener) {
@@ -97,4 +105,6 @@ public class ParentFragment extends Fragment implements VolleyCallback {
                 .fit()
                 .into(imageView);
     }
+
+
 }
