@@ -15,6 +15,7 @@ import com.mohamedibrahim.nearbyme.adapters.FavoriteAdapter;
 import com.mohamedibrahim.nearbyme.listeners.AdapterListener;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
 import com.mohamedibrahim.nearbyme.listeners.LifecycleTabsListener;
+import com.mohamedibrahim.nearbyme.models.places.Venue;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,10 +67,19 @@ public class FavoriteFragment extends ParentFragment implements SwipeRefreshLayo
     }
 
     @Override
-    public void onAdapterListener(Object mComingObject) {
-        placesDBHelper.deletePlace(items.get((int) mComingObject));
-        items.remove(items.get((int) mComingObject));
-        mAdapter.notifyDataSetChanged(items);
+    public void onAdapterListener(Object mComingObject, int clickType) {
+
+        switch (clickType) {
+            case FavoriteAdapter.ITEM_CLICK_UNLIKE:
+                placesDBHelper.deletePlace(items.get((int) mComingObject));
+                items.remove(items.get((int) mComingObject));
+                mAdapter.notifyDataSetChanged(items);
+                break;
+            case FavoriteAdapter.ITEM_CLICK_SHARE:
+                Venue venue = placesDBHelper.getAllPlaces().get((int) mComingObject).getVenue();
+                share(venue.getName(), venue.getLocation().getAddress());
+                break;
+        }
     }
 
     @Override

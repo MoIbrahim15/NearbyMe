@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import com.mohamedibrahim.nearbyme.R;
@@ -24,6 +25,8 @@ import butterknife.OnClick;
 
 
 public class FavoriteAdapter extends BaseAdapter {
+    public static final int ITEM_CLICK_UNLIKE = 1;
+    public static final int ITEM_CLICK_SHARE = 2;
     private AdapterListener listener;
     ArrayList<Item> items;
 
@@ -52,6 +55,8 @@ public class FavoriteAdapter extends BaseAdapter {
         RatingBar ratingBar;
         @BindView(R.id.chk_like)
         CheckBox chkLike;
+        @BindView(R.id.img_share)
+        ImageView imgShare;
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -76,13 +81,20 @@ public class FavoriteAdapter extends BaseAdapter {
             }
             chkLike.setChecked(true);
             chkLike.setTag(position);
-
+            imgShare.setTag(position);
         }
 
         @OnClick(R.id.chk_like)
         void itemUnLike(View v) {
             int mPosition = (int) v.getTag();
-            mListener.onAdapterListener(mPosition);
+            mListener.onAdapterListener(mPosition, ITEM_CLICK_UNLIKE);
         }
+
+        @OnClick(R.id.img_share)
+        void itemShare(View v) {
+            int mPosition = (int) v.getTag();
+            mListener.onAdapterListener(mPosition, ITEM_CLICK_SHARE);
+        }
+
     }
 }

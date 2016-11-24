@@ -2,6 +2,7 @@ package com.mohamedibrahim.nearbyme.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -105,6 +106,15 @@ public class ParentFragment extends Fragment implements VolleyCallback {
                 .fit()
                 .into(imageView);
     }
-
+    protected void share(String placeName, String placeAddress) {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_msg)
+                + " " + placeName
+                + getResources().getString(R.string.at)
+                + placeAddress
+                + " " + getResources().getString(R.string.app_hashtag));
+        startActivity(shareIntent);
+    }
 
 }

@@ -34,5 +34,8 @@
     <string name="address_found">address found</string>
     <string name="sry_msg">Sorry, Please try again later.</string>
     <string name="meter">M</string>
+    <string name="app_hashtag"> #NearBy_ME </string>
+    <string name="share_msg" >Its a wonderful place, lets GO </string>
+    <string name="at">\@</string>
 
 </resources>

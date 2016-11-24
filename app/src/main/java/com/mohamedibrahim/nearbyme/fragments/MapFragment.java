@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -224,12 +225,13 @@ public class MapFragment extends ParentFragment implements OperationListener {
     }
 
     private void fillData(final Marker marker, Dialog detailsDialog) {
-        Venue venue = allPlaces.get(marker.getSnippet()).getVenue();
+        final Venue venue = allPlaces.get(marker.getSnippet()).getVenue();
         CustomTextView tvName = (CustomTextView) detailsDialog.findViewById(R.id.tv_title);
         CustomTextView tvAddress = (CustomTextView) detailsDialog.findViewById(R.id.tv_address);
         CustomTextView tvDistance = (CustomTextView) detailsDialog.findViewById(R.id.tv_distance);
         RatingBar ratingBar = (RatingBar) detailsDialog.findViewById(R.id.rate_place);
         final CheckBox chkLike = (CheckBox) detailsDialog.findViewById(R.id.chk_like);
+        ImageView imgShare = (ImageView) detailsDialog.findViewById(R.id.img_share);
 
 
         if (venue.getName() != null) {
@@ -261,6 +263,12 @@ public class MapFragment extends ParentFragment implements OperationListener {
             }
         });
 
+        imgShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                share(venue.getName(), venue.getLocation().getAddress());
+            }
+        });
     }
 
     @Override
