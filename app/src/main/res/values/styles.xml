@@ -37,9 +37,23 @@
         <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
     </style>
+
     <style name="InfoStyle">
         <item name="android:textSize">@dimen/s16</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
+
+    <style name="edSearchPlaces">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawableLeft">@drawable/places_ic_search</item>
+        <item name="android:hint">@string/search</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+    </style>
+
+    <string name="search">SEARCH</string>
 </resources>

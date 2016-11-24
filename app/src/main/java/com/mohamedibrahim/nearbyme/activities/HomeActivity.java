@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.fragments.HomeFragment;
+import com.mohamedibrahim.nearbyme.fragments.MapFragment;
 import com.mohamedibrahim.nearbyme.listeners.LocationSettingListener;
 
 import butterknife.ButterKnife;
@@ -83,6 +84,10 @@ public class HomeActivity extends ParentActivity {
                 if (mLocationListener != null) {
                     mLocationListener.onRequestResult(requestCode, resultCode, data);
                 }
+                break;
+            case MapFragment.PLACE_AUTOCOMPLETE_REQUEST_CODE:
+                MapFragment.getChosenPlaceOnMap(data, this);
+                break;
         }
     }
 }

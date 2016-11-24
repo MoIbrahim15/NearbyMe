@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.mohamedibrahim.nearbyme.views.CustomButton
+        android:id="@+id/btn_find_on_map"
+        style="@style/edSearchPlaces"
+        android:layout_margin="10dp"
+        app:fontType="georgiaBold"
+        android:padding="10dp"/>
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
