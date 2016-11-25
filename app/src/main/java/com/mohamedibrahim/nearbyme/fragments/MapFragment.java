@@ -194,7 +194,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
                             public boolean onMarkerClick(Marker marker) {
 
                                 Dialog detailsDialog = new Dialog(getContext(), R.style.DialogStyle);
-                                detailsDialog.setContentView(R.layout.item_info_content);
+                                detailsDialog.setContentView(R.layout.dialog_info_content);
 
                                 fillData(marker, detailsDialog);
 
