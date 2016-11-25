@@ -1,12 +1,10 @@
 package com.mohamedibrahim.nearbyme.fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.widget.ImageView;
 
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.activities.ParentActivity;
@@ -16,7 +14,6 @@ import com.mohamedibrahim.nearbyme.listeners.VolleyCallback;
 import com.mohamedibrahim.nearbyme.managers.BaseManager;
 import com.mohamedibrahim.nearbyme.models.places.Item;
 import com.mohamedibrahim.nearbyme.utils.SoftKeyboardUtils;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -98,14 +95,18 @@ public class ParentFragment extends Fragment implements VolleyCallback {
         }
     }
 
-    public static void SetPicassoImage(Context context, String url, ImageView imageView) {
-        Picasso.with(context)
-                .load(url)
-                .placeholder(R.drawable.progress_animation)
-                .error(R.drawable.ic_error)
-                .fit()
-                .into(imageView);
-    }
+    /**
+     * using Picasso will be in next phase
+     */
+//    public static void SetPicassoImage(Context context, String url, ImageView imageView) {
+//        Picasso.with(context)
+//                .load(url)
+//                .placeholder(R.drawable.progress_animation)
+//                .error(R.drawable.ic_error)
+//                .fit()
+//                .into(imageView);
+//    }
+
     protected void share(String placeName, String placeAddress) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
