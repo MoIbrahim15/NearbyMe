@@ -15,9 +15,15 @@
     <string name="favorites">الأماكن المفضلة</string>
     <string name="meter">م</string>
     <string name="sry_msg">يوجد خطأ برجاء المحاولة لاحقأ</string>
-    <string name="share_msg" >/كان رائع , هيا بنا</string>
+    <string name="share_msg">/كان رائع , هيا بنا</string>
     <string name="search">البحث</string>
     <string name="share_button">زر المشاركة</string>
     <string name="logo_img">صورة اللوجو</string>
+    <string name="gps_not_enabled">GPS  لا بعمل</string>
+    <string name="not_supported">هذا الجهاز غير مدعم</string>
+    <string name="make_sure_with_internet">تأكد من توفر الانترنت</string>
+    <string name="get_location">يتم البحث عن موقعك</string>
+    <string name="resultion_reqierd">يوجد خطأ</string>
+    <string name="gps_off">GPS غير متاح يمكنك اجادة الممكان يدويأ</string>
 
 </resources>

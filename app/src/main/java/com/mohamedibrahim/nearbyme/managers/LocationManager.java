@@ -34,6 +34,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.activities.HomeActivity;
 import com.mohamedibrahim.nearbyme.listeners.LocationSettingListener;
 import com.mohamedibrahim.nearbyme.listeners.OperationListener;
@@ -96,13 +97,13 @@ public class LocationManager implements GoogleApiClient.ConnectionCallbacks,
                             PLAY_SERVICES_RESOLUTION_REQUEST).show();
                 } else {
                     Toast.makeText(mContext,
-                            "This device is not supported.", Toast.LENGTH_LONG)
+                            mContext.getString(R.string.not_supported), Toast.LENGTH_LONG)
                             .show();
                 }
                 return false;
             }
         } else {
-            Toast.makeText(mContext, "Make Sure Internet Connection is On", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.make_sure_with_internet), Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -198,7 +199,7 @@ public class LocationManager implements GoogleApiClient.ConnectionCallbacks,
                 final Status status = result.getStatus();
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
-                        Toast.makeText(mContext, "GETTING YOUR LOCATION ... ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, mContext.getString(R.string.get_location), Toast.LENGTH_SHORT).show();
                         if (Build.VERSION.SDK_INT >= 23) {
                             if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
                                     || ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -217,11 +218,11 @@ public class LocationManager implements GoogleApiClient.ConnectionCallbacks,
                                     (Activity) mContext,
                                     HomeActivity.LOCATION_SETTING_REQUEST);
                         } catch (IntentSender.SendIntentException e) {
-                            Toast.makeText(mContext, " RESOLUTION_REQUIRED ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.resultion_reqierd), Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        Toast.makeText(mContext, "GPS OFF, Please find Location manually", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, mContext.getString(R.string.gps_off), Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -267,7 +268,7 @@ public class LocationManager implements GoogleApiClient.ConnectionCallbacks,
                 });
                 break;
             case Activity.RESULT_CANCELED:
-                Toast.makeText(mContext, "GPS not enabled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mContext.getResources().getString(R.string.gps_not_enabled), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

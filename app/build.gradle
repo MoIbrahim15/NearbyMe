@@ -6,7 +6,7 @@ android {
         config {
             keyAlias 'nearbyme'
             keyPassword 'nearbymeNTLMI'
-            storeFile file('E:/Work/AndroidStudioProjects/MAL/NearbyMe/NearByMEKeystore.jks')
+            storeFile file("$rootDir/NearByMEKeystore.jks")
             storePassword 'nearbymeNTL'
         }
     }
