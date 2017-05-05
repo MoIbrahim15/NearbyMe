@@ -1,0 +1,5 @@
+KEY STORE PATH : E:\Work\AndroidStudioProjects\MAL\NearbyMe\NagleatKeystore.jks
+password: nearbymeNTL
+
+ALIAS : nearbyme
+Password: nearbymeNTLMI
