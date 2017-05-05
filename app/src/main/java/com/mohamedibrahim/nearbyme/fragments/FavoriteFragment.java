@@ -16,6 +16,7 @@ import com.mohamedibrahim.nearbyme.listeners.AdapterListener;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
 import com.mohamedibrahim.nearbyme.listeners.LifecycleTabsListener;
 import com.mohamedibrahim.nearbyme.models.places.Venue;
+import com.mohamedibrahim.nearbyme.utils.DBUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,14 +55,14 @@ public class FavoriteFragment extends ParentFragment implements SwipeRefreshLayo
     private void initRecycler() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new FavoriteAdapter(getContext(), R.layout.item_info_content, items, this);
+        mAdapter = new FavoriteAdapter(getContext(), items, this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void onRefresh() {
-        items = placesDBHelper.getAllPlaces();
+        items = DBUtils.getAllPlaces(getContext());
         mAdapter.notifyDataSetChanged(items);
         refreshLayout.setRefreshing(false);
     }
@@ -71,12 +72,12 @@ public class FavoriteFragment extends ParentFragment implements SwipeRefreshLayo
 
         switch (clickType) {
             case FavoriteAdapter.ITEM_CLICK_UNLIKE:
-                placesDBHelper.deletePlace(items.get((int) mComingObject));
+                DBUtils.deletePlace(items.get((int) mComingObject), getContext());
                 items.remove(items.get((int) mComingObject));
                 mAdapter.notifyDataSetChanged(items);
                 break;
             case FavoriteAdapter.ITEM_CLICK_SHARE:
-                Venue venue = placesDBHelper.getAllPlaces().get((int) mComingObject).getVenue();
+                Venue venue = DBUtils.getAllPlaces(getContext()).get((int) mComingObject).getVenue();
                 share(venue.getName(), venue.getLocation().getAddress());
                 break;
         }

@@ -15,6 +15,4 @@ public interface FragmentToActivityListener {
     void showHomeFragment();
 
     void changeTitle(int titleRes);
-
-    void setBackToolbar(int titleRes);
 }

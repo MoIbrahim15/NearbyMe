@@ -1,5 +1,8 @@
 package com.mohamedibrahim.nearbyme.adapters;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +14,6 @@ import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.listeners.AdapterListener;
 import com.mohamedibrahim.nearbyme.models.places.Item;
 import com.mohamedibrahim.nearbyme.views.CustomTextView;
-import com.mohamedibrahim.nearbyme.views.ViewHolder;
 
 import java.util.ArrayList;
 
@@ -24,26 +26,26 @@ import butterknife.OnClick;
  **/
 
 
-public class FavoriteAdapter extends BaseAdapter {
+public class FavoriteAdapter extends AnimationBaseAdapter<Item> {
     public static final int ITEM_CLICK_UNLIKE = 1;
     public static final int ITEM_CLICK_SHARE = 2;
     private AdapterListener listener;
     ArrayList<Item> items;
 
-    public FavoriteAdapter(Context context, int itemLayoutRes, ArrayList<Item> items, AdapterListener listener) {
-        super(context, itemLayoutRes, items);
+
+    public FavoriteAdapter(Context context, ArrayList<Item> items, AdapterListener listener) {
+        super(context, R.layout.item_info_content, items);
         this.listener = listener;
         this.items = items;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        initView(parent);
-        return new FavoriteAdapter.ItemViewHolder(mView);
+        return new ViewHolder(initView(parent));
     }
 
 
-    class ItemViewHolder extends ViewHolder {
+    class ViewHolder extends AnimationBaseAdapter<Item>.BaseViewHolder {
 
         @BindView(R.id.tv_title)
         CustomTextView tvTitle;
@@ -58,14 +60,13 @@ public class FavoriteAdapter extends BaseAdapter {
         @BindView(R.id.img_share)
         ImageView imgShare;
 
-        ItemViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            mListener = listener;
         }
 
         @Override
-        public void onBind(int position) {
+        protected void fillData(int position) {
             Item item = (Item) getItem(position);
             if (item.getVenue().getName() != null) {
                 tvTitle.setText(item.getVenue().getName());
@@ -87,14 +88,24 @@ public class FavoriteAdapter extends BaseAdapter {
         @OnClick(R.id.chk_like)
         void itemUnLike(View v) {
             int mPosition = (int) v.getTag();
-            mListener.onAdapterListener(mPosition, ITEM_CLICK_UNLIKE);
+            listener.onAdapterListener(mPosition, ITEM_CLICK_UNLIKE);
         }
 
         @OnClick(R.id.img_share)
         void itemShare(View v) {
             int mPosition = (int) v.getTag();
-            mListener.onAdapterListener(mPosition, ITEM_CLICK_SHARE);
+            listener.onAdapterListener(mPosition, ITEM_CLICK_SHARE);
         }
 
+    }
+
+    @Override
+    protected Animator getAnimators(View view, int position) {
+
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", DEFAULT_FROM, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", DEFAULT_FROM, 1f);
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(scaleX, scaleY);
+        return set;
     }
 }

@@ -8,11 +8,11 @@ import android.support.v4.app.Fragment;
 
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.activities.ParentActivity;
-import com.mohamedibrahim.nearbyme.data.PlacesDBHelper;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
 import com.mohamedibrahim.nearbyme.listeners.VolleyCallback;
 import com.mohamedibrahim.nearbyme.managers.BaseManager;
 import com.mohamedibrahim.nearbyme.models.places.Item;
+import com.mohamedibrahim.nearbyme.utils.DBUtils;
 import com.mohamedibrahim.nearbyme.utils.SoftKeyboardUtils;
 
 import java.util.ArrayList;
@@ -28,7 +28,6 @@ public class ParentFragment extends Fragment implements VolleyCallback {
     protected BaseManager manager;
     protected int titleRes;
     protected ArrayList<Item> items;
-    protected PlacesDBHelper placesDBHelper;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,8 +40,7 @@ public class ParentFragment extends Fragment implements VolleyCallback {
         progress.setCancelable(false);
         progress.setCanceledOnTouchOutside(false);
 
-        placesDBHelper = new PlacesDBHelper(getContext());
-        items = placesDBHelper.getAllPlaces();
+        items = DBUtils.getAllPlaces(getContext());
     }
 
     public void setFragmentToActivityListener(FragmentToActivityListener fragmentToActivityListener) {
@@ -106,7 +104,6 @@ public class ParentFragment extends Fragment implements VolleyCallback {
 //                .fit()
 //                .into(imageView);
 //    }
-
     protected void share(String placeName, String placeAddress) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");

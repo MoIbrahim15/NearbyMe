@@ -67,14 +67,4 @@ public class ParentActivity extends AppCompatActivity implements FragmentToActiv
         actionbar.setHomeButtonEnabled(false);
         actionbar.setDisplayShowTitleEnabled(false);
     }
-
-    @Override
-    public void setBackToolbar(int titleRes) {
-        setupToolbar();
-        assert actionbar != null;
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeButtonEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_back);
-        changeTitle(titleRes);
-    }
 }

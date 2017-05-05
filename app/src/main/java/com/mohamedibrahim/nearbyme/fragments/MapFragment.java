@@ -39,6 +39,7 @@ import com.mohamedibrahim.nearbyme.managers.LocationManager;
 import com.mohamedibrahim.nearbyme.models.places.Item;
 import com.mohamedibrahim.nearbyme.models.places.Places;
 import com.mohamedibrahim.nearbyme.models.places.Venue;
+import com.mohamedibrahim.nearbyme.utils.DBUtils;
 import com.mohamedibrahim.nearbyme.views.CustomButton;
 import com.mohamedibrahim.nearbyme.views.CustomTextView;
 
@@ -55,7 +56,8 @@ import butterknife.OnClick;
 public class MapFragment extends ParentFragment implements OperationListener {
 
     @BindView(R.id.find_places)
-    protected ImageButton btnFindPlaces;
+    ImageButton btnFindPlaces;
+
     private static MapView mMapView;
     private static CustomButton btnFindOnMap;
 
@@ -248,7 +250,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
             ratingBar.setRating(Float.parseFloat(venue.getRating()) / 2);
         }
 
-        if (placesDBHelper.ifPlaceFavorite(venue.getId())) {
+        if (DBUtils.ifPlaceFavorite(venue.getId(), getContext())) {
             chkLike.setChecked(true);
         }
 
@@ -256,9 +258,9 @@ public class MapFragment extends ParentFragment implements OperationListener {
             @Override
             public void onClick(View view) {
                 if (!chkLike.isChecked()) {
-                    placesDBHelper.deletePlace(allPlaces.get(marker.getSnippet()));
+                    DBUtils.deletePlace(allPlaces.get(marker.getSnippet()), getContext());
                 } else {
-                    placesDBHelper.addPlace(allPlaces.get(marker.getSnippet()));
+                    DBUtils.addPlace(allPlaces.get(marker.getSnippet()), getContext());
                 }
             }
         });
