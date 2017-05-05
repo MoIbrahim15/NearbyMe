@@ -6,10 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.mohamedibrahim.nearbyme.R;
-import com.mohamedibrahim.nearbyme.activities.ParentActivity;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
-import com.mohamedibrahim.nearbyme.listeners.VolleyCallback;
-import com.mohamedibrahim.nearbyme.managers.BaseManager;
 import com.mohamedibrahim.nearbyme.models.places.Item;
 import com.mohamedibrahim.nearbyme.utils.DBUtils;
 import com.mohamedibrahim.nearbyme.utils.SoftKeyboardUtils;
@@ -20,18 +17,15 @@ import java.util.ArrayList;
  * Created by Mohamed Ibrahim on 10/29/2016.
  **/
 
-public class ParentFragment extends Fragment implements VolleyCallback {
+public class ParentFragment extends Fragment {
 
     protected FragmentToActivityListener fragmentToActivityListener;
-    protected BaseManager manager;
     protected int titleRes;
     protected ArrayList<Item> items;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        manager = BaseManager.newInstance(((ParentActivity) getActivity()), this);
         items = DBUtils.getAllPlaces(getContext());
     }
 
@@ -43,23 +37,6 @@ public class ParentFragment extends Fragment implements VolleyCallback {
         this.titleRes = titleRes;
     }
 
-    @Override
-    public void onSuccess(String methodName, Object object) {
-    }
-
-    @Override
-    public void onFailure(String methodName, String message) {
-        if (fragmentToActivityListener != null) {
-            fragmentToActivityListener.showSnackbar(message);
-        }
-    }
-
-    @Override
-    public void onFailure(String methodName, int messageRes) {
-        if (fragmentToActivityListener != null) {
-            fragmentToActivityListener.showSnackbar(messageRes);
-        }
-    }
 
     @Override
     public void onPause() {

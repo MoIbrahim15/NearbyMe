@@ -15,7 +15,7 @@
     <string name="time_out_error">Time out, Please try again later.</string>
 
     <!--URL's-->
-    <string name="main_url" translatable="false">https://api.foursquare.com/v2/venues/</string>
+    <string name="main_url" translatable="false">https://api.foursquare.com/v2/venues/explore?</string>
 
     <!--APP KEY FOURSQURE-->
     <string name="client_id" translatable="false">XBFJUKS5P5FCM3ZYIE0GM04GTIHOIVXFKE0015PNCKFKLDPM</string>

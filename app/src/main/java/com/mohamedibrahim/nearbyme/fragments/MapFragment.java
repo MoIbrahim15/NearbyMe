@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,19 +35,24 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 import com.mohamedibrahim.nearbyme.R;
 import com.mohamedibrahim.nearbyme.activities.HomeActivity;
 import com.mohamedibrahim.nearbyme.listeners.FragmentToActivityListener;
 import com.mohamedibrahim.nearbyme.listeners.LocationSettingListener;
 import com.mohamedibrahim.nearbyme.listeners.OperationListener;
 import com.mohamedibrahim.nearbyme.managers.LocationManager;
+import com.mohamedibrahim.nearbyme.models.general_response.ResponseObject;
 import com.mohamedibrahim.nearbyme.models.places.Item;
 import com.mohamedibrahim.nearbyme.models.places.Places;
 import com.mohamedibrahim.nearbyme.models.places.Venue;
 import com.mohamedibrahim.nearbyme.utils.DBUtils;
+import com.mohamedibrahim.nearbyme.utils.NetworkUtils;
 import com.mohamedibrahim.nearbyme.views.CustomButton;
 import com.mohamedibrahim.nearbyme.views.CustomTextView;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -54,7 +63,7 @@ import butterknife.OnClick;
  * Created by Mohamed Ibrahim on 10/31/2016.
  **/
 
-public class MapFragment extends ParentFragment implements OperationListener {
+public class MapFragment extends ParentFragment implements OperationListener, LoaderManager.LoaderCallbacks<String> {
 
     @BindView(R.id.find_places)
     ImageButton btnFindPlaces;
@@ -70,6 +79,8 @@ public class MapFragment extends ParentFragment implements OperationListener {
     private GoogleMap googleMapBase;
     private View mView;
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 20005;
+    private static final String URL_EXTRA = "URL";
+    private static final int LOADER_ID = 1;
 
     public static MapFragment newInstance(FragmentToActivityListener fragmentToActivityListener) {
         MapFragment mapFragment = new MapFragment();
@@ -102,12 +113,109 @@ public class MapFragment extends ParentFragment implements OperationListener {
     void onClickFindPlaces() {
         if (mComingLocation != null && mComingLocation.getLatitude() != 0.0) {
             String ll = "ll=" + mComingLocation.getLatitude() + "," + mComingLocation.getLongitude() /*+ "&query=asasdsdgfsfs"*/;
-            progressBar.setVisibility(View.VISIBLE);
-            manager.createRequest("explore?", ll, Places.class);
+            fetchPlacesFromAPI(ll);
         } else {
             fragmentToActivityListener.showSnackbar(R.string.sry_msg);
         }
     }
+
+
+    private void fetchPlacesFromAPI(String location) {
+        progressBar.setVisibility(View.VISIBLE);
+        Bundle queryBundle = new Bundle();
+        queryBundle.putString(URL_EXTRA, String.valueOf(NetworkUtils.buildUrl(getContext(), location)));
+        LoaderManager loaderManager = getActivity().getSupportLoaderManager();
+        Loader<String> moviesLoader = loaderManager.getLoader(LOADER_ID);
+        if (moviesLoader == null) {
+            loaderManager.initLoader(LOADER_ID, queryBundle, this);
+        } else {
+            loaderManager.restartLoader(LOADER_ID, queryBundle, this);
+        }
+    }
+
+    @Override
+    public Loader<String> onCreateLoader(int id, final Bundle args) {
+        return new AsyncTaskLoader<String>(getActivity()) {
+            String mJsonResult;
+
+            @Override
+            protected void onStartLoading() {
+                if (args == null) {
+                    return;
+                }
+                if (mJsonResult != null) {
+                    deliverResult(mJsonResult);
+                } else {
+                    forceLoad();
+                }
+            }
+
+            @Override
+            public String loadInBackground() {
+                try {
+                    String urlString = args.getString(URL_EXTRA);
+                    if (urlString == null || TextUtils.isEmpty(urlString)) {
+                        return null;
+                    } else {
+                        URL url = new URL(urlString);
+                        return NetworkUtils.getResponseFromHttpUrl(url);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void deliverResult(String jsonResult) {
+                mJsonResult = jsonResult;
+                super.deliverResult(mJsonResult);
+            }
+
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        if (null != data) {
+            Log.v("response", data);
+            progressBar.setVisibility(View.GONE);
+            ResponseObject responseObject = new Gson().fromJson(data, ResponseObject.class);
+            if (responseObject.getMeta().getCode().equalsIgnoreCase("200")) {
+                String json;
+                json = new Gson().toJson(responseObject.getResponse());
+                Places places = new Gson().fromJson(json, Places.class);
+                for (int i = 0; i < places.getGroups().get(0).getItems().size(); i++) {
+                    Item item = places.getGroups().get(0).getItems().get(i);
+                    String itemLatLng = item.getVenue().getLocation().getLat() +
+                            "," + item.getVenue().getLocation().getLng();
+
+                    MarkerOptions newMarker = new MarkerOptions();
+                    newMarker.position(new LatLng(item.getVenue().getLocation().getLat(),
+                            item.getVenue().getLocation().getLng()));
+                    newMarker.snippet(itemLatLng);
+                    allPlaces.put(itemLatLng, item);
+                    googleMapBase.addMarker(newMarker);
+                }
+                if (places.getWarning() != null) {
+                    fragmentToActivityListener.showSnackbar(places.getWarning().getText());
+                }
+            } else {
+                if (fragmentToActivityListener != null) {
+                    fragmentToActivityListener.showSnackbar(R.string.sry_msg);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        /*
+         * We aren't using this method in application, but i required to Override
+         * it to implement the LoaderCallbacks<String> interface
+         */
+    }
+
 
     @OnClick(R.id.btn_find_on_map)
     void onClickFindOnMap() {
@@ -274,30 +382,6 @@ public class MapFragment extends ParentFragment implements OperationListener {
                 share(venue.getName(), venue.getLocation().getAddress());
             }
         });
-    }
-
-    @Override
-    public void onSuccess(String methodName, Object object) {
-        progressBar.setVisibility(View.GONE);
-        if (object instanceof Places) {
-            for (int i = 0; i < ((Places) object).getGroups().get(0).getItems().size(); i++) {
-                Item item = ((Places) object).getGroups().get(0).getItems().get(i);
-                String itemLatLng = item.getVenue().getLocation().getLat() +
-                        "," + item.getVenue().getLocation().getLng();
-
-//                Log.v("result", item.getVenue().getRating());
-
-                MarkerOptions newMarker = new MarkerOptions();
-                newMarker.position(new LatLng(item.getVenue().getLocation().getLat(),
-                        item.getVenue().getLocation().getLng()));
-                newMarker.snippet(itemLatLng);
-                allPlaces.put(itemLatLng, item);
-                googleMapBase.addMarker(newMarker);
-            }
-            if (((Places) object).getWarning() != null) {
-                fragmentToActivityListener.showSnackbar(((Places) object).getWarning().getText());
-            }
-        }
     }
 }
 
