@@ -6,10 +6,13 @@
     <dimen name="d5">5dp</dimen>
     <dimen name="d8">8dp</dimen>
     <dimen name="d16">16dp</dimen>
+    <dimen name="d6">6dp</dimen>
 
 
     <!--Text Size-->
     <dimen name="s18">18dp</dimen>
     <dimen name="s16">16sp</dimen>
+    <dimen name="s24">24sp</dimen>
+    <dimen name="d4">4dp</dimen>
 
 </resources>

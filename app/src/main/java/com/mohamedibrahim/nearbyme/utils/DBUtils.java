@@ -2,20 +2,21 @@ package com.mohamedibrahim.nearbyme.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 
-import com.mohamedibrahim.nearbyme.data.PlacesContract;
+import com.mohamedibrahim.nearbyme.data.PlaceContract;
 import com.mohamedibrahim.nearbyme.models.places.Item;
 import com.mohamedibrahim.nearbyme.models.places.Location;
 import com.mohamedibrahim.nearbyme.models.places.Venue;
 
 import java.util.ArrayList;
 
-import static com.mohamedibrahim.nearbyme.data.PlacesContract.PlaceEntry.KEY_PLACE_ADDRESS;
-import static com.mohamedibrahim.nearbyme.data.PlacesContract.PlaceEntry.KEY_PLACE_DISTANCE;
-import static com.mohamedibrahim.nearbyme.data.PlacesContract.PlaceEntry.KEY_PLACE_ID;
-import static com.mohamedibrahim.nearbyme.data.PlacesContract.PlaceEntry.KEY_PLACE_RATE;
-import static com.mohamedibrahim.nearbyme.data.PlacesContract.PlaceEntry.KEY_PLACE_TITLE;
+import static com.mohamedibrahim.nearbyme.data.PlaceContract.PlaceEntry.KEY_PLACE_ADDRESS;
+import static com.mohamedibrahim.nearbyme.data.PlaceContract.PlaceEntry.KEY_PLACE_DISTANCE;
+import static com.mohamedibrahim.nearbyme.data.PlaceContract.PlaceEntry.KEY_PLACE_ID;
+import static com.mohamedibrahim.nearbyme.data.PlaceContract.PlaceEntry.KEY_PLACE_RATE;
+import static com.mohamedibrahim.nearbyme.data.PlaceContract.PlaceEntry.KEY_PLACE_TITLE;
 
 /**
  * Created by Mohamed Ibrahim
@@ -23,6 +24,8 @@ import static com.mohamedibrahim.nearbyme.data.PlacesContract.PlaceEntry.KEY_PLA
  */
 
 public class DBUtils {
+
+    private static final String ACTION_WIDGET_UPDATED = "android.appwidget.action.APPWIDGET_UPDATE";
 
     public static void addPlace(Item item, Context context) {
         ContentValues values = new ContentValues();
@@ -32,21 +35,23 @@ public class DBUtils {
         values.put(KEY_PLACE_DISTANCE, item.getVenue().getLocation().getDistance());
         values.put(KEY_PLACE_RATE, item.getVenue().getRating());
 
-        context.getContentResolver().insert(PlacesContract.PlaceEntry.CONTENT_URI,
+        context.getContentResolver().insert(PlaceContract.PlaceEntry.CONTENT_URI,
                 values);
-    }
-
-    public static void deletePlace(Item item,Context context) {
-        context.getContentResolver().delete(PlacesContract.PlaceEntry.CONTENT_URI,
-                PlacesContract.PlaceEntry.KEY_PLACE_ID + "=?", new String[]{String.valueOf(item.getVenue().getId())});
+        updateWidget(context);
 
     }
 
-    public static boolean ifPlaceFavorite(String id,Context context) {
+    public static void deletePlace(Item item, Context context) {
+        context.getContentResolver().delete(PlaceContract.PlaceEntry.CONTENT_URI,
+                PlaceContract.PlaceEntry.KEY_PLACE_ID + "=?", new String[]{String.valueOf(item.getVenue().getId())});
+        updateWidget(context);
+    }
 
-        Cursor cursor = context.getContentResolver().query(PlacesContract.PlaceEntry.CONTENT_URI,
+    public static boolean ifPlaceFavorite(String id, Context context) {
+
+        Cursor cursor = context.getContentResolver().query(PlaceContract.PlaceEntry.CONTENT_URI,
                 null,
-                PlacesContract.PlaceEntry.KEY_PLACE_ID + "=?",
+                PlaceContract.PlaceEntry.KEY_PLACE_ID + "=?",
                 new String[]{String.valueOf(id)},
                 null);
         int count = 0;
@@ -58,11 +63,10 @@ public class DBUtils {
         return count > 0;
     }
 
-    // Getting All Places
     public static ArrayList<Item> getAllPlaces(Context context) {
         ArrayList<Item> items = new ArrayList<>();
 
-        Cursor cursor = context.getContentResolver().query(PlacesContract.PlaceEntry.CONTENT_URI,
+        Cursor cursor = context.getContentResolver().query(PlaceContract.PlaceEntry.CONTENT_URI,
                 null,
                 null,
                 null,
@@ -92,5 +96,10 @@ public class DBUtils {
         if (cursor != null)
             cursor.close();
         return items;
+    }
+
+    private static void updateWidget(Context context) {
+        Intent intent = new Intent(ACTION_WIDGET_UPDATED);
+        context.sendBroadcast(intent);
     }
 }

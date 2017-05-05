@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
  * on 5/5/2017.
  */
 
-public class PlacesContract {
+public class PlaceContract {
 
     public static final String AUTHORITY = "com.mohamedibrahim.nearbyme";
     private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);

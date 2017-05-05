@@ -11,14 +11,14 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import static com.mohamedibrahim.nearbyme.data.PlacesContract.PlaceEntry.TABLE_PLACES;
+import static com.mohamedibrahim.nearbyme.data.PlaceContract.PlaceEntry.TABLE_PLACES;
 
 /**
  * Created by Mohamed Ibrahim
  * on 5/5/2017.
  */
 
-public class PlacesContentProvider extends ContentProvider {
+public class PlaceContentProvider extends ContentProvider {
 
     private static final int PLACES = 101;
     private static final int PLACE_WITH_ID = 102;
@@ -32,16 +32,16 @@ public class PlacesContentProvider extends ContentProvider {
      */
     private static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PlacesContract.AUTHORITY, PlacesContract.PATH_PLACES, PLACES);
-        uriMatcher.addURI(PlacesContract.AUTHORITY, PlacesContract.PATH_PLACES + "/#", PLACE_WITH_ID);
+        uriMatcher.addURI(PlaceContract.AUTHORITY, PlaceContract.PATH_PLACES, PLACES);
+        uriMatcher.addURI(PlaceContract.AUTHORITY, PlaceContract.PATH_PLACES + "/#", PLACE_WITH_ID);
         return uriMatcher;
     }
 
-    private PlacesDBHelper mPlacesDBHelper;
+    private PlaceDBHelper mPlaceDBHelper;
 
     @Override
     public boolean onCreate() {
-        mPlacesDBHelper = PlacesDBHelper.getInstance(getContext());
+        mPlaceDBHelper = PlaceDBHelper.getInstance(getContext());
         return true;
     }
 
@@ -56,7 +56,7 @@ public class PlacesContentProvider extends ContentProvider {
 
         switch (match) {
             case PLACES:
-                db = mPlacesDBHelper.getReadableDatabase();
+                db = mPlaceDBHelper.getReadableDatabase();
                 retCursor = db.query(TABLE_PLACES,
                         projection,
                         selection,
@@ -83,7 +83,7 @@ public class PlacesContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
-        SQLiteDatabase db = mPlacesDBHelper.getWritableDatabase();
+        SQLiteDatabase db = mPlaceDBHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
         Uri returnUri; // URI to be returned
 
@@ -91,7 +91,7 @@ public class PlacesContentProvider extends ContentProvider {
             case PLACES:
                 long id = db.insert(TABLE_PLACES, null, contentValues);
                 if (id > 0) {
-                    returnUri = ContentUris.withAppendedId(PlacesContract.PlaceEntry.CONTENT_URI, id);
+                    returnUri = ContentUris.withAppendedId(PlaceContract.PlaceEntry.CONTENT_URI, id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
@@ -116,7 +116,7 @@ public class PlacesContentProvider extends ContentProvider {
 
         switch (match) {
             case PLACES:
-                db = mPlacesDBHelper.getWritableDatabase();
+                db = mPlaceDBHelper.getWritableDatabase();
                 tasksDeleted = db.delete(TABLE_PLACES, selection, selectionArgs);
                 break;
             default:
@@ -147,7 +147,7 @@ public class PlacesContentProvider extends ContentProvider {
                 table = TABLE_PLACES;
                 break;
         }
-        SQLiteDatabase db = mPlacesDBHelper.getWritableDatabase();
+        SQLiteDatabase db = mPlaceDBHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             for (ContentValues cv : values) {
