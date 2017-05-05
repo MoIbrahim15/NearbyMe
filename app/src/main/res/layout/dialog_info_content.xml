@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="4dp"
+            android:layout_marginRight="@dimen/d4"
             android:isIndicator="true"
             android:max="5"
             android:numStars="5"
@@ -58,7 +58,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="right"
+            android:gravity="end"
             android:orientation="horizontal">
 
             <CheckBox
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="4dp"
+                android:layout_marginRight="@dimen/d4"
                 android:button="@null"
                 android:drawableRight="@drawable/like_selector"
                 android:src="@drawable/ic_like" />
@@ -76,6 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:contentDescription="@string/share_button"
                 android:src="@drawable/ic_share" />
 
         </LinearLayout>

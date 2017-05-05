@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!--Volley Errors-->
+    <string name="some_error_occurred">للأسف حدث خطأ ما.</string>
+    <string name="no_connection">من فضلك تأكد من وجود انترنت.</string>
+    <string name="server_error">يوجد خطأ بالسيرفر برجاء المحاولة لاحقأ</string>
+    <string name="time_out_error">يوجد خطأ بالسيرفر برجاء المحاولة لاحقأ</string>
+
+
+    <!--APP STRINGS-->
+    <string name="loading">برجاء انتظار التحميل</string>
+    <string name="choose_location">أختار الموقع</string>
+    <string name="favorites">الأماكن المفضلة</string>
+    <string name="meter">م</string>
+    <string name="sry_msg">يوجد خطأ برجاء المحاولة لاحقأ</string>
+    <string name="share_msg" >/كان رائع , هيا بنا</string>
+    <string name="search">البحث</string>
+    <string name="share_button">زر المشاركة</string>
+    <string name="logo_img">صورة اللوجو</string>
+
+</resources>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <com.mohamedibrahim.nearbyme.views.CustomButton
         android:id="@+id/btn_find_on_map"
         style="@style/edSearchPlaces"
         android:layout_margin="10dp"
-        app:fontType="georgiaBold"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        app:fontType="georgiaBold" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
@@ -17,10 +17,18 @@
         android:layout_height="match_parent" />
 
     <ImageButton
-        android:background="@android:color/transparent"
         android:id="@+id/find_places"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/choose_location"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_here"/>
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_here" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 </RelativeLayout>

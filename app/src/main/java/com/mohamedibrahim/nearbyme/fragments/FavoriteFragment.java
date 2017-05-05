@@ -42,7 +42,7 @@ public class FavoriteFragment extends ParentFragment implements SwipeRefreshLayo
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_favorite, container, false);
+        View view = inflater.inflate(R.layout.recycler_refresh, container, false);
         ButterKnife.bind(this, view);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));

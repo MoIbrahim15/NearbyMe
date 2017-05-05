@@ -55,5 +55,4 @@
         <item name="android:textColorHint">@color/colorPrimary</item>
     </style>
 
-    <string name="search">SEARCH</string>
 </resources>

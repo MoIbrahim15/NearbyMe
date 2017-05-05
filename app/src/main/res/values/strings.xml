@@ -1,6 +1,6 @@
 <resources>
     <!--APP NAME-->
-    <string name="app_name">NearBy ME</string>
+    <string name="app_name" translatable="false">NearBy ME</string>
 
     <!--Fonts-->
     <string name="georgia_regular" translatable="false">fonts/Georgia-Regular.ttf</string>
@@ -15,27 +15,25 @@
     <string name="time_out_error">Time out, Please try again later.</string>
 
     <!--URL's-->
-    <string name="main_url">https://api.foursquare.com/v2/venues/</string>
+    <string name="main_url" translatable="false">https://api.foursquare.com/v2/venues/</string>
 
     <!--APP KEY FOURSQURE-->
-    <string name="client_id">XBFJUKS5P5FCM3ZYIE0GM04GTIHOIVXFKE0015PNCKFKLDPM</string>
-    <string name="client_secret">FDBJUQTGCGNWLRRC4OWUYHIARCLPOWLAV3V01WJUUF1OUHEI</string>
-    <string name="api_version">20130815</string>
+    <string name="client_id" translatable="false">XBFJUKS5P5FCM3ZYIE0GM04GTIHOIVXFKE0015PNCKFKLDPM</string>
+    <string name="client_secret" translatable="false">FDBJUQTGCGNWLRRC4OWUYHIARCLPOWLAV3V01WJUUF1OUHEI</string>
+    <string name="api_version" translatable="false">20130815</string>
 
 
     <!--APP STRINGS-->
     <string name="loading">Loading</string>
     <string name="choose_location">CHOOSE LOCATION</string>
-    <string name="title_activity_maps">Map</string>
     <string name="favorites">FAVORITES</string>
-    <string name="service_not_available">service not available</string>
-    <string name="invalid_lat_long_used">invalid lat long used</string>
-    <string name="no_address_found">no address found</string>
-    <string name="address_found">address found</string>
-    <string name="sry_msg">Sorry, Please try again later.</string>
     <string name="meter">M</string>
-    <string name="app_hashtag"> #NearBy_ME </string>
+    <string name="sry_msg">Sorry, Please try again later.</string>
+    <string name="app_hashtag" translatable="false"> #NearBy_ME </string>
     <string name="share_msg" >Its a wonderful place, lets GO </string>
-    <string name="at">\@</string>
+    <string name="at" translatable="false">\@</string>
+    <string name="search">SEARCH</string>
+    <string name="share_button">Share button</string>
+    <string name="logo_img">Logo Image</string>
 
 </resources>

@@ -1,6 +1,5 @@
 package com.mohamedibrahim.nearbyme.fragments;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,7 +23,6 @@ import java.util.ArrayList;
 public class ParentFragment extends Fragment implements VolleyCallback {
 
     protected FragmentToActivityListener fragmentToActivityListener;
-    protected ProgressDialog progress;
     protected BaseManager manager;
     protected int titleRes;
     protected ArrayList<Item> items;
@@ -34,12 +32,6 @@ public class ParentFragment extends Fragment implements VolleyCallback {
         super.onCreate(savedInstanceState);
 
         manager = BaseManager.newInstance(((ParentActivity) getActivity()), this);
-
-        progress = new ProgressDialog(getActivity());
-        progress.setMessage(getString(R.string.loading));
-        progress.setCancelable(false);
-        progress.setCanceledOnTouchOutside(false);
-
         items = DBUtils.getAllPlaces(getContext());
     }
 
@@ -57,9 +49,6 @@ public class ParentFragment extends Fragment implements VolleyCallback {
 
     @Override
     public void onFailure(String methodName, String message) {
-        if (progress.isShowing()) {
-            progress.hide();
-        }
         if (fragmentToActivityListener != null) {
             fragmentToActivityListener.showSnackbar(message);
         }
@@ -67,9 +56,6 @@ public class ParentFragment extends Fragment implements VolleyCallback {
 
     @Override
     public void onFailure(String methodName, int messageRes) {
-        if (progress.isShowing()) {
-            progress.hide();
-        }
         if (fragmentToActivityListener != null) {
             fragmentToActivityListener.showSnackbar(messageRes);
         }

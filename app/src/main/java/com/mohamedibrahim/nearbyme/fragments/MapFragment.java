@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -57,6 +58,8 @@ public class MapFragment extends ParentFragment implements OperationListener {
 
     @BindView(R.id.find_places)
     ImageButton btnFindPlaces;
+    @BindView(R.id.progress)
+    ProgressBar progressBar;
 
     private static MapView mMapView;
     private static CustomButton btnFindOnMap;
@@ -99,7 +102,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
     void onClickFindPlaces() {
         if (mComingLocation != null && mComingLocation.getLatitude() != 0.0) {
             String ll = "ll=" + mComingLocation.getLatitude() + "," + mComingLocation.getLongitude() /*+ "&query=asasdsdgfsfs"*/;
-            progress.show();
+            progressBar.setVisibility(View.VISIBLE);
             manager.createRequest("explore?", ll, Places.class);
         } else {
             fragmentToActivityListener.showSnackbar(R.string.sry_msg);
@@ -275,7 +278,7 @@ public class MapFragment extends ParentFragment implements OperationListener {
 
     @Override
     public void onSuccess(String methodName, Object object) {
-        progress.hide();
+        progressBar.setVisibility(View.GONE);
         if (object instanceof Places) {
             for (int i = 0; i < ((Places) object).getGroups().get(0).getItems().size(); i++) {
                 Item item = ((Places) object).getGroups().get(0).getItems().get(i);
